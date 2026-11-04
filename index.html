@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f4f1e9">
+<title>沖繩旅行手帳 · 2026</title>
+<style>
+:root{--ink:#273b43;--muted:#718087;--sea:#4c8990;--sea2:#dcebea;--sand:#e9dfca;--paper:#fbfaf6;--line:#e8e4da;--coral:#d88770;--gold:#c7a66a;--shadow:0 12px 34px #263d4310}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f1efe8;color:var(--ink);font-family:Inter,"Noto Sans TC","Microsoft JhengHei",sans-serif;line-height:1.65}
+button,input,select{font:inherit}button{cursor:pointer}.shell{max-width:1120px;margin:auto;padding:24px 22px 64px}
+.topline{display:flex;justify-content:space-between;align-items:center;font-size:11px;letter-spacing:.22em;color:var(--muted);padding:4px 2px 18px}.topline span:last-child{letter-spacing:.08em}
+.hero{position:relative;overflow:hidden;border-radius:22px;background:linear-gradient(125deg,#dcebe7 0%,#c8dfdd 43%,#eadfc9 100%);min-height:270px;padding:34px 42px;display:flex;align-items:center;box-shadow:var(--shadow)}
+.hero:before{content:"";position:absolute;width:390px;height:390px;border-radius:50%;right:7%;top:-190px;background:#ffffff45}.hero:after{content:"";position:absolute;width:260px;height:260px;border-radius:50%;right:23%;bottom:-205px;background:#ffffff50}
+.hero-copy{position:relative;z-index:1}.eyebrow{font-size:11px;letter-spacing:.24em;color:#55767a;font-weight:700}.hero h1{font-family:Georgia,"Noto Serif TC",serif;font-weight:500;font-size:clamp(35px,6vw,57px);letter-spacing:.06em;margin:10px 0 2px;color:#29464d}.hero .date{font-size:14px;letter-spacing:.14em;color:#557177}.hero .sub{font-size:12px;color:#647b7d;margin-top:18px;letter-spacing:.08em}
+.island-art{position:absolute;right:4%;bottom:0;width:42%;height:90%;z-index:1;opacity:.85}.island-art svg{width:100%;height:100%}
+.nav{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0 18px}.nav button,.day-tabs button{border:1px solid var(--line);background:#fbfaf6;color:#66767a;border-radius:999px;padding:9px 18px;font-size:13px;transition:.2s}.nav button.active,.day-tabs button.active{background:var(--ink);color:white;border-color:var(--ink)}
+.panel{display:none}.panel.active{display:block}.section-head{display:flex;justify-content:space-between;align-items:end;margin:28px 2px 15px}.section-head h2{font-family:Georgia,"Noto Serif TC",serif;font-weight:500;font-size:27px;margin:0}.section-head p{margin:0;color:var(--muted);font-size:12px}
+.day-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 20px}.day-tabs button{min-width:84px;padding:10px 13px}.day-tabs small{display:block;font-size:10px;opacity:.75}
+.day-layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(240px,.8fr);gap:18px}.day-main,.side-card,.info-card{background:var(--paper);border:1px solid var(--line);border-radius:17px;box-shadow:var(--shadow)}
+.day-main{padding:25px 27px}.day-kicker{color:var(--sea);font-size:11px;letter-spacing:.2em;font-weight:700}.day-main h3{font-family:Georgia,"Noto Serif TC",serif;font-weight:500;font-size:26px;margin:4px 0}.day-desc{color:var(--muted);font-size:13px;margin:0 0 20px}
+.stop{display:grid;grid-template-columns:68px 1fr;gap:13px;padding:15px 0;border-top:1px solid var(--line)}.stop-time{font-size:12px;color:var(--sea);font-weight:700;padding-top:2px}.stop-title{font-size:15px;font-weight:700}.stop-note{font-size:12px;color:var(--muted);margin-top:3px}.stop-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:6px}.stop-actions a,.textlink{font-size:11px;color:var(--sea);text-decoration:none;border-bottom:1px solid #b7ceca}
+.side-card{padding:20px;margin-bottom:14px}.side-card h4{font-size:13px;letter-spacing:.08em;margin:0 0 12px}.side-card p{font-size:12px;color:var(--muted);margin:5px 0}.side-card .big{font-size:18px;color:var(--ink);font-weight:700}.mini-map{height:120px;border-radius:12px;background:linear-gradient(145deg,#dcebe7,#efe5d2);display:flex;align-items:center;justify-content:center;color:#63858a;font-size:12px;letter-spacing:.1em;margin-bottom:12px}
+.checkrow{display:flex;align-items:center;gap:9px;font-size:12px;color:#596a6e;margin:9px 0}.checkrow input{accent-color:var(--sea)}
+.info-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}.info-card{padding:22px}.info-card h3{font-size:15px;margin:0 0 12px}.info-card p{font-size:13px;color:var(--muted);margin:6px 0}.info-card strong{color:var(--ink)}.tag{display:inline-block;padding:3px 9px;border-radius:999px;background:var(--sea2);color:#4c777b;font-size:10px;margin:2px}
+.list-row{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);font-size:13px}.list-row:last-child{border:0}.muted{color:var(--muted);font-size:12px}
+.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.tool{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:20px}.tool h3{margin:0 0 12px;font-size:15px}.tool input,.tool select{width:100%;border:1px solid var(--line);background:white;border-radius:9px;padding:9px 11px;margin:5px 0;color:var(--ink)}.btn{border:0;background:var(--sea);color:white;padding:9px 14px;border-radius:9px;font-size:12px;margin-top:7px}.expense-item{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line);font-size:12px}
+footer{text-align:center;color:#899294;font-size:11px;letter-spacing:.12em;padding:32px 0 0}
+@media(max-width:760px){.shell{padding:14px 13px 45px}.hero{min-height:230px;padding:27px 24px}.island-art{width:48%;right:-4%;opacity:.5}.day-layout{grid-template-columns:1fr}.info-grid,.tool-grid{grid-template-columns:1fr}.section-head{align-items:start;gap:6px;flex-direction:column}.day-main{padding:21px 18px}.stop{grid-template-columns:55px 1fr}.nav button{padding:8px 13px}.hero .sub{max-width:230px}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="topline"><span>TRAVEL JOURNAL</span><span>OKINAWA · JAPAN　/　2026</span></div>
+  <header class="hero">
+    <div class="hero-copy">
+      <div class="eyebrow">TRIP PLAN　/　JAPAN</div>
+      <h1>沖繩自駕旅行</h1>
+      <div class="date">2026.12.16 — 12.20</div>
+      <div class="sub">五天四夜・島嶼散策・美食與購物</div>
+    </div>
+    <div class="island-art" aria-hidden="true">
+      <svg viewBox="0 0 500 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 230C75 195 112 215 165 190C214 166 248 179 292 153C350 119 386 143 485 82" stroke="#6D9D9B" stroke-width="3" stroke-linecap="round"/>
+        <path d="M45 255C110 220 155 238 210 209C264 180 311 194 362 161C414 128 450 139 500 111" stroke="#8CB4AD" stroke-width="2" stroke-linecap="round"/>
+        <path d="M130 160C150 127 177 116 204 125C224 132 230 153 217 168C201 186 169 185 147 177Z" fill="#F9F5E9" opacity=".85"/>
+        <path d="M285 93C305 64 333 53 358 64C381 75 383 98 364 112C344 127 313 121 294 109Z" fill="#F9F5E9" opacity=".85"/>
+        <path d="M235 217C257 190 278 183 297 192C314 200 315 219 299 231C280 244 252 238 235 229Z" fill="#F9F5E9" opacity=".85"/>
+        <circle cx="402" cy="51" r="25" fill="#F8F1DF" opacity=".9"/>
+        <path d="M65 90C87 71 108 73 123 91" stroke="#719B97" stroke-width="3" stroke-linecap="round"/>
+        <path d="M76 107C95 91 112 94 126 108" stroke="#719B97" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </div>
+  </header>
+
+  <nav class="nav" aria-label="主要導覽">
+    <button class="active" data-panel="itinerary">每日行程</button>
+    <button data-panel="stay">住宿資訊</button>
+    <button data-panel="flight">機票・租車</button>
+    <button data-panel="budget">記帳工具</button>
+    <button data-panel="saved">收藏清單</button>
+    <button data-panel="phrase">日文小卡</button>
+  </nav>
+
+  <main>
+    <section class="panel active" id="itinerary">
+      <div class="section-head"><h2>五日行程</h2><p>自駕移動｜依照區域安排，保留彈性時間</p></div>
+      <div class="day-tabs" id="dayTabs"></div>
+      <div class="day-layout">
+        <article class="day-main" id="dayContent"></article>
+        <aside>
+          <div class="side-card">
+            <div class="mini-map">OKINAWA　島旅路線</div>
+            <h4>本日移動重點</h4>
+            <p id="dayRoute"></p>
+            <p class="muted">點選景點下方的地圖連結，可直接開啟導航。</p>
+          </div>
+          <div class="side-card">
+            <h4>今日確認清單</h4>
+            <div id="dailyChecks"></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="panel" id="stay">
+      <div class="section-head"><h2>住宿資訊</h2><p>依照你的行程檔案整理</p></div>
+      <div class="info-grid">
+        <div class="info-card"><span class="tag">DAY 1 · 12/16</span><h3>Hotel Route Inn Nago</h3><p><strong>住宿地區：</strong>名護市</p><p><strong>入住：</strong>12/16（三）</p><p><strong>退房：</strong>12/17（四）</p></div>
+        <div class="info-card"><span class="tag">DAY 2–4 · 12/17–12/20</span><h3>Toyoko INN Naha Asahibashi Station</h3><p><strong>住宿地區：</strong>那霸市・旭橋站</p><p><strong>入住：</strong>12/17（四）</p><p><strong>退房：</strong>12/20（日）</p><p>連住三晚</p></div>
+      </div>
+      <p class="muted" style="margin-top:14px">以上住宿名稱與日期依你提供的行程檔案整理；地址、訂房編號及入住時間未在檔案中提供。</p>
+    </section>
+
+    <section class="panel" id="flight">
+      <div class="section-head"><h2>機票・租車</h2><p>出發前確認的重要資訊</p></div>
+      <div class="info-grid">
+        <div class="info-card"><h3>✈ 去程｜12/16（三）</h3><p><strong>航線：</strong>台灣桃園 → 沖繩那霸</p><p><strong>航空公司 / 航班：</strong>待填入</p><p><strong>起飛 / 抵達：</strong>待填入</p><p><strong>航廈 / 行李：</strong>待確認</p></div>
+        <div class="info-card"><h3>✈ 回程｜12/20（日）</h3><p><strong>航線：</strong>沖繩那霸 → 台灣桃園</p><p><strong>航空公司 / 航班：</strong>待填入</p><p><strong>起飛 / 抵達：</strong>待填入</p><p><strong>航廈 / 行李：</strong>待確認</p></div>
+        <div class="info-card"><h3>🚗 租車資訊</h3><p><strong>取車：</strong>12/16　那霸機場周邊</p><p><strong>還車：</strong>12/20　那霸機場周邊</p><p><strong>租車公司 / 車型：</strong>待填入</p><p><strong>預約編號 / 保險：</strong>待填入</p></div>
+        <div class="info-card"><h3>自駕提醒</h3><p>・確認台灣駕照日文譯本與護照</p><p>・取車時拍攝車身既有刮痕</p><p>・確認 ETC、兒童座椅（如需要）及油種</p><p>・還車前確認加油規定與營業時間</p></div>
+      </div>
+    </section>
+
+    <section class="panel" id="budget">
+      <div class="section-head"><h2>旅行記帳</h2><p>資料暫存在目前瀏覽器</p></div>
+      <div class="tool-grid">
+        <div class="tool"><h3>新增一筆花費</h3>
+          <input id="expenseName" placeholder="項目，例如：晚餐、停車費">
+          <input id="expenseAmount" type="number" min="0" placeholder="金額（日圓）">
+          <select id="expenseDay"><option>DAY 1</option><option>DAY 2</option><option>DAY 3</option><option>DAY 4</option><option>DAY 5</option></select>
+          <button class="btn" id="addExpense">加入記帳</button>
+        </div>
+        <div class="tool"><h3>花費統計</h3><div class="big" id="expenseTotal">¥0</div><p class="muted">累計日圓支出</p><div id="expenseList"></div></div>
+      </div>
+    </section>
+
+    <section class="panel" id="saved">
+      <div class="section-head"><h2>收藏清單</h2><p>先放入這趟行程中的主要目的地</p></div>
+      <div class="info-grid" id="savedList"></div>
+    </section>
+
+    <section class="panel" id="phrase">
+      <div class="section-head"><h2>日文旅遊小卡</h2><p>自駕、餐廳與購物時可直接出示</p></div>
+      <div class="info-grid">
+        <div class="info-card"><h3>交通・開車</h3><div class="list-row"><span>請問租車接駁車在哪裡？</span><strong>レンタカーの送迎バスはどこですか？</strong></div><div class="list-row"><span>請問加油站在哪裡？</span><strong>ガソリンスタンドはどこですか？</strong></div><div class="list-row"><span>我要還車。</span><strong>車を返却したいです。</strong></div></div>
+        <div class="info-card"><h3>餐廳・購物</h3><div class="list-row"><span>兩位，請問有位子嗎？</span><strong>二人ですが、席はありますか？</strong></div><div class="list-row"><span>可以刷卡嗎？</span><strong>カードは使えますか？</strong></div><div class="list-row"><span>請給我收據。</span><strong>レシートをください。</strong></div></div>
+        <div class="info-card"><h3>緊急狀況</h3><div class="list-row"><span>請幫助我。</span><strong>助けてください。</strong></div><div class="list-row"><span>請幫我叫警察。</span><strong>警察を呼んでください。</strong></div><div class="list-row"><span>我需要去醫院。</span><strong>病院に行きたいです。</strong></div></div>
+        <div class="info-card"><h3>常用資訊</h3><p><strong>すみません</strong>　不好意思 / 對不起</p><p><strong>ありがとうございます</strong>　謝謝</p><p><strong>大丈夫です</strong>　沒關係 / 可以</p><p><strong>これをください</strong>　請給我這個</p></div>
+      </div>
+    </section>
+  </main>
+  <footer>OKINAWA TRAVEL JOURNAL · 2026　/　HAVE A NICE TRIP</footer>
+</div>
+<script>
+const days=[
+{date:"12/16",weekday:"三",title:"抵達沖繩・北部自駕",desc:"台灣出發，抵達那霸後前往租車公司取車，依序走訪北部景點。",route:"那霸機場 → Car Rental Okinawa → 琉球村 → 午餐 → 萬座毛 → 古宇利島 → 名護市",stops:[
+["抵達後","那霸機場・Car Rental Okinawa 租車","抵達沖繩後前往 Car Rental Okinawa 辦理取車。"],
+["上午","琉球村","依原始行程安排，先參觀琉球村。"],
+["午餐","午餐","午餐地點尚未指定。"],
+["下午","萬座毛","欣賞沖繩西海岸景觀。"],
+["下午","古宇利島","前往古宇利島，欣賞海景。"],
+["晚上","名護市・Hotel Route Inn Nago","前往名護市住宿。"],
+["晚上","唐吉軻德","安排唐吉軻德購物，再返回住宿。"]
+]},
+{date:"12/17",weekday:"四",title:"沖繩北部・中部景點",desc:"依照行程順序由北往中部移動，晚上入住那霸。",route:"沖繩美麗海水族館 → 今歸仁麵 → 殘波岬燈塔 → 美國村 → 永旺夢樂城（寶可夢中心） → Toyoko INN Naha Asahibashi Station",stops:[
+["上午","沖繩美麗海水族館","參觀沖繩美麗海水族館。"],
+["午餐","今歸仁麵","安排今歸仁麵午餐。"],
+["下午","殘波岬燈塔","前往殘波岬燈塔。"],
+["傍晚","美國村","逛街與用餐。"],
+["晚上","永旺夢樂城（寶可夢中心）","前往永旺夢樂城及寶可夢中心。"],
+["晚上","Toyoko INN Naha Asahibashi Station","入住那霸旭橋站東橫 INN。"]
+]},
+{date:"12/18",weekday:"五",title:"南部海景・購物行程",desc:"依照原始行程安排瀨長島、糸滿魚市場、水族館及購物中心。",route:"瀨長島 → 糸滿魚市場 → DMM Kariyushi 水族館 → iias 沖繩豐崎購物中心 → Toyoko INN Naha Asahibashi Station",stops:[
+["上午","瀨長島","前往瀨長島。"],
+["午餐","糸滿魚市場","前往糸滿魚市場用餐。"],
+["下午","DMM Kariyushi 水族館","參觀 DMM Kariyushi 水族館。"],
+["下午","iias 沖繩豐崎購物中心","購物與用餐。"],
+["晚上","Toyoko INN Naha Asahibashi Station","返回同一間那霸住宿。"]
+]},
+{date:"12/19",weekday:"六",title:"首里城・沖繩南部",desc:"走訪首里城、知念岬公園與玉泉洞，晚上安排國際通。",route:"首里城 → 知念岬公園 → 玉泉洞 → 國際通 → Toyoko INN Naha Asahibashi Station",stops:[
+["上午","首里城","參觀首里城。"],
+["中午","知念岬公園","前往知念岬公園。"],
+["下午","玉泉洞","參觀玉泉洞。"],
+["晚上","國際通","逛國際通、用餐與購物。"],
+["晚上","Toyoko INN Naha Asahibashi Station","返回那霸旭橋站東橫 INN。"]
+]},
+{date:"12/20",weekday:"日",title:"神社巡禮・返台",desc:"上午走訪兩間神社，再前往那霸機場。",route:"波上宮 → 沖宮神社 → 那霸機場",stops:[
+["上午","波上宮","前往波上宮參拜。"],
+["上午","沖宮神社","前往沖宮神社參拜。"],
+["返程","那霸機場","前往那霸機場，搭機返回台灣。"]
+]}
+]
+let currentDay=0;
+const tabs=document.getElementById('dayTabs'),content=document.getElementById('dayContent');
+function mapUrl(name){return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(name+' 沖繩');}
+function renderDay(){
+tabs.innerHTML=days.map((d,i)=>`<button class="${i===currentDay?'active':''}" data-day="${i}">DAY ${i+1}<small>${d.date}（${d.weekday}）</small></button>`).join('');
+tabs.querySelectorAll('button').forEach(b=>b.onclick=()=>{currentDay=+b.dataset.day;renderDay()});
+const d=days[currentDay];
+content.innerHTML=`<div class="day-kicker">DAY ${currentDay+1}　/　${d.date}（${d.weekday}）</div><h3>${d.title}</h3><p class="day-desc">${d.desc}</p>`+
+d.stops.map(s=>`<div class="stop"><div class="stop-time">${s[0]}</div><div><div class="stop-title">${s[1]}</div><div class="stop-note">${s[2]}</div><div class="stop-actions"><a target="_blank" rel="noopener" href="${mapUrl(s[1])}">Google 地圖 ↗</a><a target="_blank" rel="noopener" href="https://map.naver.com/p/search/${encodeURIComponent(s[1]+' 沖繩')}">Naver Map ↗</a></div></div></div>`).join('');
+document.getElementById('dayRoute').textContent=d.route;
+const checks=['確認今日景點營業時間','確認停車場位置','確認住宿與入住時間','確認車上油量與導航'];
+document.getElementById('dailyChecks').innerHTML=checks.map((x,i)=>`<label class="checkrow"><input type="checkbox" data-check="${currentDay}-${i}"> ${x}</label>`).join('');
+document.querySelectorAll('[data-check]').forEach(el=>{el.checked=localStorage.getItem('okinawa-'+el.dataset.check)==='1';el.onchange=()=>localStorage.setItem('okinawa-'+el.dataset.check,el.checked?'1':'0')});
+}
+renderDay();
+document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.getElementById(b.dataset.panel).classList.add('active');window.scrollTo({top:0,behavior:'smooth'})});
+const saved=[
+["琉球村","文化體驗"],["萬座毛","海岸景觀"],["古宇利島","北部自駕"],["美麗海水族館","水族館"],["殘波岬燈塔","海岸景觀"],["美國村","購物美食"],["寶可夢中心","購物"],["瀨長島","海景商店街"],["糸滿魚市場","在地美食"],["DMM Kariyushi水族館","水族館"],["首里城","歷史文化"],["玉泉洞","自然景觀"],["國際通","購物美食"],["波上宮","神社"],["沖宮神社","神社"]
+];
+document.getElementById('savedList').innerHTML=saved.map(s=>`<div class="info-card"><h3>${s[0]}</h3><span class="tag">${s[1]}</span><p><a class="textlink" target="_blank" rel="noopener" href="${mapUrl(s[0])}">開啟地圖 ↗</a></p></div>`).join('');
+let expenses=JSON.parse(localStorage.getItem('okinawa-expenses')||'[]');
+function renderExpenses(){document.getElementById('expenseTotal').textContent='¥'+expenses.reduce((a,b)=>a+b.amount,0).toLocaleString('ja-JP');document.getElementById('expenseList').innerHTML=expenses.map((e,i)=>`<div class="expense-item"><span>${e.day}・${e.name}</span><span>¥${e.amount.toLocaleString()} <button aria-label="刪除" style="border:0;background:none;color:#c77" onclick="removeExpense(${i})">×</button></span></div>`).join('')||'<p class="muted">尚未新增花費</p>';localStorage.setItem('okinawa-expenses',JSON.stringify(expenses))}
+window.removeExpense=i=>{expenses.splice(i,1);renderExpenses()};
+document.getElementById('addExpense').onclick=()=>{let name=document.getElementById('expenseName').value.trim(),amount=Number(document.getElementById('expenseAmount').value),day=document.getElementById('expenseDay').value;if(!name||!amount||amount<0)return alert('請輸入項目與金額');expenses.push({name,amount,day});document.getElementById('expenseName').value='';document.getElementById('expenseAmount').value='';renderExpenses()};
+renderExpenses();
+</script>
+</body>
+</html>

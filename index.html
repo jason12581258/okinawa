@@ -180,7 +180,7 @@ tabs.innerHTML=days.map((d,i)=>`<button class="${i===currentDay?'active':''}" da
 tabs.querySelectorAll('button').forEach(b=>b.onclick=()=>{currentDay=+b.dataset.day;renderDay()});
 const d=days[currentDay];
 content.innerHTML=`<div class="day-kicker">DAY ${currentDay+1}　/　${d.date}（${d.weekday}）</div><h3>${d.title}</h3><p class="day-desc">${d.desc}</p>`+
-d.stops.map(s=>`<div class="stop"><div class="stop-time">${s[0]}</div><div><div class="stop-title">${s[1]}</div><div class="stop-note">${s[2]}</div><div class="stop-actions"><a target="_blank" rel="noopener" href="${mapUrl(s[1])}">Google 地圖 ↗</a><a target="_blank" rel="noopener" href="https://map.naver.com/p/search/${encodeURIComponent(s[1]+' 沖繩')}">Naver Map ↗</a></div></div></div>`).join('');
+d.stops.map(s=>`<div class="stop"><div class="stop-time">${s[0]}</div><div><div class="stop-title">${s[1]}</div><div class="stop-note">${s[2]}</div><div class="stop-actions"><a target="_blank" rel="noopener" href="${mapUrl(s[1])}">Google 地圖 ↗</a></div></div></div>`).join('');
 document.getElementById('dayRoute').textContent=d.route;
 const checks=['確認今日景點營業時間','確認停車場位置','確認住宿與入住時間','確認車上油量與導航'];
 document.getElementById('dailyChecks').innerHTML=checks.map((x,i)=>`<label class="checkrow"><input type="checkbox" data-check="${currentDay}-${i}"> ${x}</label>`).join('');

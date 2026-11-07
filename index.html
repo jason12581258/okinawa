@@ -184,7 +184,7 @@ const days=[
 ]
 let currentDay=0;
 const tabs=document.getElementById('dayTabs'),content=document.getElementById('dayContent');
-function mapUrl(name){const locations={'Hotel Route Inn Nago':'Hotel Route Inn Nago, 5 Chome-11-3 Agarie, Nago, Okinawa 905-0021, Japan','Car Rental Okinawa カーレンタル沖縄':'カーレンタル沖縄 那覇空港店, 256-5 Nakachi, Tomigusuku, Okinawa 901-0235, Japan'};const query=locations[name]||name+' 沖繩';return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(query);}
+function mapUrl(name){const locations={'Hotel Route Inn Nago':'Hotel Route Inn Nago, 5 Chome-11-3 Agarie, Nago, Okinawa 905-0021, Japan','Car Rental Okinawa カーレンタル沖縄':"https://www.google.com/maps/place/Car+Rental+Okinawa+%E3%82%AB%E3%83%BC%E3%83%AC%E3%83%B3%E3%82%BF%E3%83%AB%E6%B2%96%E7%B8%84/@26.1766635,127.6654662,16z/data=!4m10!1m2!2m1!1zQ2FyIFJlbnRhbCBPa2luYXdhIOOCq-ODvOODrOODs-OCv-ODq-aylue4hA!3m6!1s0x34e56b2cd08416ed:0x901e9cfa89592dfa!8m2!3d26.1752338!4d127.6649141!15sCitDYXIgUmVudGFsIE9raW5hd2Eg44Kr44O844Os44Oz44K_44Or5rKW57iEWi8iLWNhciByZW50YWwgb2tpbmF3YSDjgqvjg7wg44Os44Oz44K_44OrIOaylue4hJIBEWNhcl9yZW50YWxfYWdlbmN5mgEjQ2haRFNVaE5NRzluUzBWSlEwRm5TVVJZTTAxUVExSlJFQUXgAQD6AQQIABAa!16s%2Fg%2F11fknh4w7f?entry=ttu&g_ep=EgoyMDI2MTEwNC4wIKXMDSoASAFQAw%3D%3D"};const query=locations[name]||name+' 沖繩';return query.startsWith('https://')?query:'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(query);}
 function renderDay(){
 tabs.innerHTML=days.map((d,i)=>`<button class="${i===currentDay?'active':''}" data-day="${i}">DAY ${i+1}<small>${d.date}（${d.weekday}）</small></button>`).join('');
 tabs.querySelectorAll('button').forEach(b=>b.onclick=()=>{currentDay=+b.dataset.day;renderDay()});

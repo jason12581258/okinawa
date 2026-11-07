@@ -198,9 +198,9 @@ document.querySelectorAll('[data-check]').forEach(el=>{el.checked=localStorage.g
 renderDay();
 document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.getElementById(b.dataset.panel).classList.add('active');window.scrollTo({top:0,behavior:'smooth'})});
 const saved=[
-["暖暮拉麵 名護店"],["萬座毛","海岸景觀"],["古宇利島","北部自駕"],["美麗海水族館","水族館"],["殘波岬燈塔","海岸景觀"],["美國村","購物美食"],["寶可夢中心","購物"],["瀨長島","海景商店街"],["糸滿魚市場","在地美食"],["DMM Kariyushi水族館","水族館"],["首里城","歷史文化"],["玉泉洞","自然景觀"],["國際通","購物美食"],["波上宮","神社"],["沖宮神社","神社"]
+["暖暮拉麵 名護店"],["燒肉Ryukyu No Ushi"],["炸豬排Shimabutaya Maeganeku"],["古宇利蝦蝦飯"],["今歸仁麵Nakijin Soba"],["一蘭 那霸國際通店"]
 ];
-document.getElementById('savedList').innerHTML=saved.map(s=>`<div class="info-card"><h3>${s[0]}</h3><span class="tag">${s[1]}</span><p><a class="textlink" target="_blank" rel="noopener" href="${mapUrl(s[0])}">開啟地圖 ↗</a></p></div>`).join('');
+document.getElementById('savedList').innerHTML=saved.map(s=>`<div class="info-card"><h3>${s[0]}</h3><p><a class="textlink" target="_blank" rel="noopener" href="${mapUrl(s[0])}">開啟地圖 ↗</a></p></div>`).join('');
 let expenses=JSON.parse(localStorage.getItem('okinawa-expenses')||'[]');
 function renderExpenses(){document.getElementById('expenseTotal').textContent='¥'+expenses.reduce((a,b)=>a+b.amount,0).toLocaleString('ja-JP');document.getElementById('expenseList').innerHTML=expenses.map((e,i)=>`<div class="expense-item"><span>${e.day}・${e.name}</span><span>¥${e.amount.toLocaleString()} <button aria-label="刪除" style="border:0;background:none;color:#c77" onclick="removeExpense(${i})">×</button></span></div>`).join('')||'<p class="muted">尚未新增花費</p>';localStorage.setItem('okinawa-expenses',JSON.stringify(expenses))}
 window.removeExpense=i=>{expenses.splice(i,1);renderExpenses()};

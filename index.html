@@ -184,7 +184,7 @@ const days=[
 ]
 let currentDay=0;
 const tabs=document.getElementById('dayTabs'),content=document.getElementById('dayContent');
-function mapUrl(name){const query=name==='Hotel Route Inn Nago'?'Hotel Route Inn Nago, 5 Chome-11-3 Agarie, Nago, Okinawa 905-0021, Japan':name+' 沖繩';return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(query);}
+function mapUrl(name){const locations={'Hotel Route Inn Nago':'Hotel Route Inn Nago, 5 Chome-11-3 Agarie, Nago, Okinawa 905-0021, Japan','Car Rental Okinawa カーレンタル沖縄':'カーレンタル沖縄 那覇空港店, 256-5 Nakachi, Tomigusuku, Okinawa 901-0235, Japan'};const query=locations[name]||name+' 沖繩';return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(query);}
 function renderDay(){
 tabs.innerHTML=days.map((d,i)=>`<button class="${i===currentDay?'active':''}" data-day="${i}">DAY ${i+1}<small>${d.date}（${d.weekday}）</small></button>`).join('');
 tabs.querySelectorAll('button').forEach(b=>b.onclick=()=>{currentDay=+b.dataset.day;renderDay()});

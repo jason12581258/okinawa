@@ -209,95 +209,124 @@ document.getElementById('savedList').innerHTML=saved.map(s=>`<div class="info-ca
 const EXPENSE_API='https://script.google.com/macros/s/AKfycbyOU4WVq_tpEzHCi5l_Z4NcdoccVv7Ivww54rsdGx63nKq95U4SGoWi72Vo1LKUIgYu/exec';
 let expenses=JSON.parse(localStorage.getItem('okinawa-expenses')||'[]');
 let cloudReady=false;
-function currencySymbol(c){return c==='TWD'?'NT
-function convert(){
-  const y=Number(document.getElementById('yen').value),r=Number(document.getElementById('rate').value);
-  document.getElementById('conversion').textContent=Number.isFinite(y*r)&&y>0?'約 NT$ '+Math.round(y*r).toLocaleString():'輸入金額後換算台幣';
+
+function currencySymbol(currency){
+  return currency==='TWD'?'NT$':'¥';
 }
-document.getElementById('yen').oninput=convert;
-document.getElementById('rate').oninput=convert;
-</script>
-</body>
-</html>:'¥'}
+
 function renderExpenses(){
-  const jpy=expenses.filter(e=>(e.currency||'JPY')==='JPY').reduce((a,b)=>a+Number(b.amount||0),0);
-  const twd=expenses.filter(e=>e.currency==='TWD').reduce((a,b)=>a+Number(b.amount||0),0);
-  document.getElementById('expenseTotal').innerHTML='日圓 ¥'+jpy.toLocaleString('ja-JP')+'<br>台幣 NT
-function convert(){
-  const y=Number(document.getElementById('yen').value),r=Number(document.getElementById('rate').value);
-  document.getElementById('conversion').textContent=Number.isFinite(y*r)&&y>0?'約 NT$ '+Math.round(y*r).toLocaleString():'輸入金額後換算台幣';
-}
-document.getElementById('yen').oninput=convert;
-document.getElementById('rate').oninput=convert;
-</script>
-</body>
-</html>+twd.toLocaleString('zh-TW');
-  document.getElementById('expenseList').innerHTML=expenses.map((e,i)=>'<div class="expense-item"><span>'+(e.date||e.day||'未填日期')+'・'+e.name+'</span><span>'+currencySymbol(e.currency||'JPY')+Number(e.amount).toLocaleString()+' <button aria-label="刪除" style="border:0;background:none;color:#c77" onclick="removeExpense('+i+')">×</button></span></div>').join('')||'<p class="muted">尚未新增花費</p>';
+  const jpy=expenses.filter(e=>(e.currency||'JPY')==='JPY').reduce((sum,e)=>sum+Number(e.amount||0),0);
+  const twd=expenses.filter(e=>e.currency==='TWD').reduce((sum,e)=>sum+Number(e.amount||0),0);
+  document.getElementById('expenseTotal').innerHTML='日圓 ¥'+jpy.toLocaleString('ja-JP')+'<br>台幣 NT$'+twd.toLocaleString('zh-TW');
+  document.getElementById('expenseList').innerHTML=expenses.map((e,index)=>
+    '<div class="expense-item"><span>'+(e.date||e.day||'未填日期')+'・'+e.name+'</span><span>'+
+    currencySymbol(e.currency||'JPY')+Number(e.amount||0).toLocaleString()+
+    ' <button aria-label="刪除" style="border:0;background:none;color:#c77" onclick="removeExpense('+index+')">×</button></span></div>'
+  ).join('')||'<p class="muted">尚未新增花費</p>';
   localStorage.setItem('okinawa-expenses',JSON.stringify(expenses));
 }
+
 function cloudGet(){
   return new Promise((resolve,reject)=>{
     const callback='okinawaExpenseCallback';
     const timer=setTimeout(()=>{cleanup();reject(new Error('讀取雲端資料逾時'));},15000);
     const script=document.createElement('script');
     function cleanup(){clearTimeout(timer);delete window[callback];script.remove();}
-    window[callback]=data=>{cleanup();data&&data.success?resolve(data.records||[]):reject(new Error('雲端回傳資料錯誤'));};
+    window[callback]=data=>{
+      cleanup();
+      if(data&&data.success) resolve(data.records||[]);
+      else reject(new Error('雲端回傳資料錯誤'));
+    };
     script.onerror=()=>{cleanup();reject(new Error('無法連線至雲端記帳'));};
     script.src=EXPENSE_API+'?callback='+callback+'&t='+Date.now();
     document.head.appendChild(script);
   });
 }
+
 async function cloudPost(data){
-  await fetch(EXPENSE_API,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data)});
+  await fetch(EXPENSE_API,{
+    method:'POST',
+    mode:'no-cors',
+    headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body:JSON.stringify(data)
+  });
 }
+
 async function loadCloudExpenses(){
+  const status=document.querySelector('#budget .section-head p');
   try{
     let records=await cloudGet();
     if(!localStorage.getItem('okinawa-expenses-migrated')){
       const legacy=JSON.parse(localStorage.getItem('okinawa-expenses')||'[]');
-      for(const e of legacy){
-        await cloudPost({action:'add',date:e.date||e.day||'未填日期',name:e.name,amount:Number(e.amount),currency:e.currency||'JPY'});
+      for(const item of legacy){
+        await cloudPost({
+          action:'add',
+          date:item.date||item.day||'未填日期',
+          name:item.name,
+          amount:Number(item.amount),
+          currency:item.currency||'JPY'
+        });
       }
       localStorage.setItem('okinawa-expenses-migrated','1');
-      if(legacy.length) records=await cloudGet();
+      if(legacy.length){
+        await new Promise(resolve=>setTimeout(resolve,1000));
+        records=await cloudGet();
+      }
     }
     expenses=records;
     cloudReady=true;
     renderExpenses();
-    document.querySelector('#budget .section-head p').textContent='雲端同步中・所有人共用同一份記帳資料';
+    status.textContent='雲端同步中・所有人共用同一份記帳資料';
   }catch(error){
-    document.querySelector('#budget .section-head p').textContent='雲端連線失敗，請重新整理頁面';
+    status.textContent='雲端連線失敗，請重新整理頁面';
     console.error(error);
   }
 }
-window.removeExpense=async i=>{
-  const item=expenses[i];
-  if(!item||!item.id)return alert('這筆資料尚未同步，請重新整理後再試');
-  if(!confirm('確定刪除這筆共同記帳？'))return;
-  try{await cloudPost({action:'delete',id:item.id});await new Promise(r=>setTimeout(r,800));expenses=await cloudGet();renderExpenses();}
-  catch(error){alert('刪除失敗，請稍後再試');}
-};
-document.getElementById('addExpense').onclick=async()=>{
-  const n=document.getElementById('expenseName').value.trim();
-  const a=Number(document.getElementById('expenseAmount').value);
-  const d=document.getElementById('expenseDate').value.trim();
-  const c=document.getElementById('expenseCurrency').value;
-  if(!n||!a||a<0||!d)return alert('請輸入日期、項目與金額');
-  if(!cloudReady)return alert('雲端資料尚未載入，請稍後再試');
+
+window.removeExpense=async index=>{
+  const item=expenses[index];
+  if(!item||!item.id) return alert('這筆資料尚未同步，請重新整理後再試');
+  if(!confirm('確定刪除這筆共同記帳？')) return;
   try{
-    await cloudPost({action:'add',date:d,name:n,amount:a,currency:c});
-    await new Promise(r=>setTimeout(r,800));
+    await cloudPost({action:'delete',id:item.id});
+    await new Promise(resolve=>setTimeout(resolve,1000));
+    expenses=await cloudGet();
+    renderExpenses();
+  }catch(error){
+    alert('刪除失敗，請稍後再試');
+  }
+};
+
+document.getElementById('addExpense').onclick=async()=>{
+  const name=document.getElementById('expenseName').value.trim();
+  const amount=Number(document.getElementById('expenseAmount').value);
+  const date=document.getElementById('expenseDate').value.trim();
+  const currency=document.getElementById('expenseCurrency').value;
+  if(!name||!Number.isFinite(amount)||amount<=0||!date)
+    return alert('請輸入日期、項目與有效金額');
+  if(!cloudReady) return alert('雲端資料尚未載入，請稍後再試');
+  try{
+    await cloudPost({action:'add',date,name,amount,currency});
+    await new Promise(resolve=>setTimeout(resolve,1000));
     expenses=await cloudGet();
     renderExpenses();
     document.getElementById('expenseName').value='';
     document.getElementById('expenseAmount').value='';
-  }catch(error){alert('新增失敗，請稍後再試');}
+  }catch(error){
+    alert('新增失敗，請稍後再試');
+  }
 };
+
 renderExpenses();
 loadCloudExpenses();
+
 function convert(){
-  const y=Number(document.getElementById('yen').value),r=Number(document.getElementById('rate').value);
-  document.getElementById('conversion').textContent=Number.isFinite(y*r)&&y>0?'約 NT$ '+Math.round(y*r).toLocaleString():'輸入金額後換算台幣';
+  const yen=Number(document.getElementById('yen').value);
+  const rate=Number(document.getElementById('rate').value);
+  document.getElementById('conversion').textContent=
+    Number.isFinite(yen*rate)&&yen>0
+      ?'約 NT$ '+Math.round(yen*rate).toLocaleString()
+      :'輸入金額後換算台幣';
 }
 document.getElementById('yen').oninput=convert;
 document.getElementById('rate').oninput=convert;

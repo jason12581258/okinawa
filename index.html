@@ -115,11 +115,11 @@ footer{text-align:center;color:#899294;font-size:11px;letter-spacing:.12em;paddi
   <div class="tool-grid">
     <div class="tool"><h3>新增一筆花費</h3>
       <input id="expenseName" placeholder="項目，例如：晚餐、車票">
-      <input id="expenseAmount" type="number" min="0" placeholder="金額（日圓）">
+      <input id="expenseAmount" type="number" min="0" placeholder="輸入金額"><select id="expenseCurrency"><option value="JPY">日圓（JPY ¥）</option><option value="TWD">台幣（TWD NT$）</option></select>
       <select id="expenseDay"><option>DAY 1</option><option>DAY 2</option><option>DAY 3</option><option>DAY 4</option><option>DAY 5</option></select>
       <button class="btn" id="addExpense">加入記帳</button>
     </div>
-    <div class="tool"><h3>花費統計</h3><div style="font-size:22px;font-weight:700" id="expenseTotal">¥0</div><p class="muted">累計日圓支出</p><div id="expenseList"></div></div><div class="tool"><h3>日圓匯率換算</h3><input id="yen" type="number" placeholder="輸入日圓金額"><input id="rate" type="number" step="0.0001" value="0.22" placeholder="台幣匯率（可自行修改）"><p id="conversion" class="muted">輸入金額後換算台幣</p></div>
+    <div class="tool"><h3>花費統計</h3><div style="font-size:17px;font-weight:700;line-height:1.9" id="expenseTotal">日圓 ¥0<br>台幣 NT$0</div><p class="muted">依幣別分開統計，不混合加總</p><div id="expenseList"></div></div><div class="tool"><h3>日圓匯率換算</h3><input id="yen" type="number" placeholder="輸入日圓金額"><input id="rate" type="number" step="0.0001" value="0.22" placeholder="台幣匯率（可自行修改）"><p id="conversion" class="muted">輸入金額後換算台幣</p></div>
   </div>
 </section>
 
@@ -206,7 +206,17 @@ const saved=[
 ["暖暮拉麵 名護店"],["燒肉Ryukyu No Ushi"],["炸豬排Shimabutaya Maeganeku"],["古宇利蝦蝦飯"],["今歸仁麵Nakijin Soba"],["一蘭 那霸國際通店"],["義大利麵POSILLIPO cucina meridionale"],["塔可飯Taco Rice Cafe Kijimuna"]
 ];
 document.getElementById('savedList').innerHTML=saved.map(s=>`<div class="info-card"><h3>${s[0]}</h3><p><a class="textlink" target="_blank" rel="noopener" href="${mapUrl(s[0])}">開啟地圖 ↗</a></p></div>`).join('');
-let expenses=JSON.parse(localStorage.getItem('okinawa-expenses')||'[]');function renderExpenses(){document.getElementById('expenseTotal').textContent='¥'+expenses.reduce((a,b)=>a+b.amount,0).toLocaleString('ja-JP');document.getElementById('expenseList').innerHTML=expenses.map((e,i)=>'<div class="expense-item"><span>'+e.day+'・'+e.name+'</span><span>¥'+e.amount.toLocaleString()+' <button aria-label="刪除" style="border:0;background:none;color:#c77" onclick="removeExpense('+i+')">×</button></span></div>').join('')||'<p class="muted">尚未新增花費</p>';localStorage.setItem('okinawa-expenses',JSON.stringify(expenses))}window.removeExpense=i=>{expenses.splice(i,1);renderExpenses()};document.getElementById('addExpense').onclick=()=>{let n=document.getElementById('expenseName').value.trim(),a=Number(document.getElementById('expenseAmount').value),d=document.getElementById('expenseDay').value;if(!n||!a||a<0)return alert('請輸入項目與金額');expenses.push({name:n,amount:a,day:d});document.getElementById('expenseName').value='';document.getElementById('expenseAmount').value='';renderExpenses()};renderExpenses();
+let expenses=JSON.parse(localStorage.getItem('okinawa-expenses')||'[]');function currencySymbol(c){return c==='TWD'?'NT
+function convert(){let y=Number(document.getElementById('yen').value),r=Number(document.getElementById('rate').value);document.getElementById('conversion').textContent=Number.isFinite(y*r)&&y>0?'約 NT$ '+Math.round(y*r).toLocaleString():'輸入金額後換算台幣'}document.getElementById('yen').oninput=convert;document.getElementById('rate').oninput=convert;
+</script>
+</body>
+</html>
+:'¥'}function renderExpenses(){const jpy=expenses.filter(e=>(e.currency||'JPY')==='JPY').reduce((a,b)=>a+b.amount,0),twd=expenses.filter(e=>e.currency==='TWD').reduce((a,b)=>a+b.amount,0);document.getElementById('expenseTotal').innerHTML='日圓 ¥'+jpy.toLocaleString('ja-JP')+'<br>台幣 NT
+function convert(){let y=Number(document.getElementById('yen').value),r=Number(document.getElementById('rate').value);document.getElementById('conversion').textContent=Number.isFinite(y*r)&&y>0?'約 NT$ '+Math.round(y*r).toLocaleString():'輸入金額後換算台幣'}document.getElementById('yen').oninput=convert;document.getElementById('rate').oninput=convert;
+</script>
+</body>
+</html>
++twd.toLocaleString('zh-TW');document.getElementById('expenseList').innerHTML=expenses.map((e,i)=>'<div class="expense-item"><span>'+e.day+'・'+e.name+'</span><span>'+currencySymbol(e.currency||'JPY')+e.amount.toLocaleString()+' <button aria-label="刪除" style="border:0;background:none;color:#c77" onclick="removeExpense('+i+')">×</button></span></div>').join('')||'<p class="muted">尚未新增花費</p>';localStorage.setItem('okinawa-expenses',JSON.stringify(expenses))}window.removeExpense=i=>{expenses.splice(i,1);renderExpenses()};document.getElementById('addExpense').onclick=()=>{let n=document.getElementById('expenseName').value.trim(),a=Number(document.getElementById('expenseAmount').value),d=document.getElementById('expenseDay').value,c=document.getElementById('expenseCurrency').value;if(!n||!a||a<0)return alert('請輸入項目與金額');expenses.push({name:n,amount:a,day:d,currency:c});document.getElementById('expenseName').value='';document.getElementById('expenseAmount').value='';renderExpenses()};renderExpenses();
 function convert(){let y=Number(document.getElementById('yen').value),r=Number(document.getElementById('rate').value);document.getElementById('conversion').textContent=Number.isFinite(y*r)&&y>0?'約 NT$ '+Math.round(y*r).toLocaleString():'輸入金額後換算台幣'}document.getElementById('yen').oninput=convert;document.getElementById('rate').oninput=convert;
 </script>
 </body>

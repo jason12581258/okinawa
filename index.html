@@ -22,6 +22,7 @@ button,input,select{font:inherit}button{cursor:pointer}.shell{max-width:1120px;m
 .day-main{padding:25px 27px}.day-kicker{color:var(--sea);font-size:11px;letter-spacing:.2em;font-weight:700}.day-main h3{font-family:Georgia,"Noto Serif TC",serif;font-weight:500;font-size:26px;margin:4px 0}.day-desc{color:var(--muted);font-size:13px;margin:0 0 20px}
 .stop{display:grid;grid-template-columns:76px 1fr;gap:13px;padding:15px 0;border-top:1px solid var(--line)}.stop-time{font-size:12px;color:var(--sea);font-weight:700;padding-top:2px}.stop-title{font-size:15px;font-weight:700}.stop-note{font-size:12px;color:var(--muted);margin-top:3px}.stop-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:6px}.stop-actions a,.textlink{font-size:11px;color:var(--sea);text-decoration:none;border-bottom:1px solid #b7ceca}
 .side-card{padding:20px;margin-bottom:14px}.side-card h4{font-size:13px;letter-spacing:.08em;margin:0 0 12px}.side-card p{font-size:12px;color:var(--muted);margin:5px 0}.side-card .big{font-size:18px;color:var(--ink);font-weight:700}
+.route-map{display:block;width:100%;height:auto;margin:12px 0 8px;border-radius:12px;border:1px solid var(--line);box-shadow:0 5px 16px #263d4310}.route-map[hidden]{display:none}
 .checkrow{display:flex;align-items:center;gap:9px;font-size:12px;color:#596a6e;margin:9px 0}.checkrow input{accent-color:var(--sea)}
 .info-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}.info-card{padding:22px}.info-card h3{font-size:15px;margin:0 0 12px}.info-card p{font-size:13px;color:var(--muted);margin:6px 0}.info-card strong{color:var(--ink)}.tag{display:inline-block;padding:3px 9px;border-radius:999px;background:var(--sea2);color:#4c777b;font-size:10px;margin:2px}
 .list-row{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);font-size:13px}.list-row:last-child{border:0}.muted{color:var(--muted);font-size:12px}
@@ -73,6 +74,7 @@ footer{text-align:center;color:#899294;font-size:11px;letter-spacing:.12em;paddi
           <div class="side-card">
             <h4>本日移動重點</h4>
             <p id="dayRoute"></p>
+            <img id="dayRouteMap" class="route-map" src="day1-map.jpg" alt="DAY 1 本日移動重點地圖" loading="lazy">
             <p class="muted">點選景點下方的地圖連結，可直接開啟導航。</p>
           </div>
           <div class="side-card">
@@ -196,6 +198,7 @@ const d=days[currentDay];
 content.innerHTML=`<div class="day-kicker">DAY ${currentDay+1}　/　${d.date}（${d.weekday}）</div><h3>${d.title}</h3><p class="day-desc">${d.desc}</p>`+
 d.stops.map(s=>`<div class="stop"><div class="stop-time">${s[0]}</div><div><div class="stop-title">${s[1]}</div><div class="stop-note">${s[2]}</div><div class="stop-actions"><a target="_blank" rel="noopener" href="${mapUrl(s[1])}">Google 地圖 ↗</a></div></div></div>`).join('');
 document.getElementById('dayRoute').textContent=d.route;
+document.getElementById('dayRouteMap').hidden=currentDay!==0;
 const checks=['確認今日景點營業時間','確認停車場位置','確認住宿與入住時間','確認車上油量與導航'];
 document.getElementById('dailyChecks').innerHTML=checks.map((x,i)=>`<label class="checkrow"><input type="checkbox" data-check="${currentDay}-${i}"> ${x}</label>`).join('');
 document.querySelectorAll('[data-check]').forEach(el=>{el.checked=localStorage.getItem('okinawa-'+el.dataset.check)==='1';el.onchange=()=>localStorage.setItem('okinawa-'+el.dataset.check,el.checked?'1':'0')});
